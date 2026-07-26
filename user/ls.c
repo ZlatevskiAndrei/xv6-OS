@@ -56,8 +56,8 @@ ls(char *path)
     }
     strcpy(buf, path);
     p = buf+strlen(buf);
-    *p++ = '/';
-    while(read(fd, &de, sizeof(de)) == sizeof(de)){
+    *p++ = '/'; // add the slash at the end of the path
+    while(read(fd, &de, sizeof(de)) == sizeof(de)){ // while there is a file name in the dir, append it to the path and printf it
       if(de.inum == 0)
         continue;
       memmove(p, de.name, DIRSIZ);
