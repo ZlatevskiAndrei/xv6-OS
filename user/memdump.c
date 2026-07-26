@@ -2,7 +2,46 @@
 #include "user/user.h"
 #include "kernel/fcntl.h"
 
-void memdump(char *fmt, char *data);
+void memdump(char *fmt, char *data) {
+  uint8* p = (uint8*)data;
+  for(; *fmt; fmt++){
+    switch (*fmt) {
+      case 'i':
+        printf("%d\n", *(uint32*) p);
+        p += sizeof(uint32);
+        break;
+
+      case 'p':
+        printf("%lx\n", *(uint64*) p);
+        p += sizeof(uint64);
+        break;
+
+      case 'h':
+        printf("%d\n", *(uint16*) p);
+        p += sizeof(uint16);
+        break;
+
+      case 'c':
+        printf("%c\n", *(uchar*) p);
+        p += sizeof(uchar);
+        break;
+
+      case 's':
+        char *str = *(char **)(p);
+        printf("%s\n", str);
+        p += sizeof(uint64);
+        break;
+
+      case 'S':
+        printf("%s\n", p);
+        break;
+   
+      default:
+      printf("Unknown!\n");
+      exit(1);
+    }
+  }
+}
 
 int
 main(int argc, char *argv[])
@@ -57,9 +96,4 @@ main(int argc, char *argv[])
   exit(0);
 }
 
-void
-memdump(char *fmt, char *data)
-{
-  // Your code here.
 
-}
