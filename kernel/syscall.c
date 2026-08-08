@@ -139,8 +139,8 @@ syscall(void)
   num = p->trapframe->a7;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
     if ((1 << num) & p->mask) {
-      printf("%d %s: interpose sys call %d\n",
-              p->pid, p->name, num);
+      // printf("%d %s: interpose sys call %d\n",
+      //         p->pid, p->name, num);
       p->trapframe->a0 = -1;
     }
     else 
