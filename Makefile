@@ -176,6 +176,7 @@ mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
 .PRECIOUS: %.o
 
 UPROGS=\
+	$U/_sandbox\
 	$U/_find\
 	$U/_sixfive\
 	$U/_sleep\
