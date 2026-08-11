@@ -283,8 +283,8 @@ ifeq ($(LAB),util)
 endif
 
 
-fs.img: mkfs/mkfs README $(UEXTRA) $(UPROGS)
-	mkfs/mkfs fs.img README $(UEXTRA) $(UPROGS)
+fs.img: mkfs/mkfs README user/exec.sh $(UEXTRA) $(UPROGS)
+	mkfs/mkfs fs.img README user/exec.sh $(UEXTRA) $(UPROGS)
 
 newfs.img: 
 	-mv -f fs.img fs.img.bk

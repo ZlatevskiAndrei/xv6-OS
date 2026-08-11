@@ -134,20 +134,30 @@ void
 syscall(void)
 {
   int num;
+  char user_path[MAXPATH];
   struct proc *p = myproc();
 
   num = p->trapframe->a7;
-  if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
-    if ((1 << num) & p->mask) {
-      // printf("%d %s: interpose sys call %d\n",
-      //         p->pid, p->name, num);
-      p->trapframe->a0 = -1;
-    }
-    else 
-      p->trapframe->a0 = syscalls[num]();
-  } else {
-    printf("%d %s: unknown sys call %d\n",
-            p->pid, p->name, num);
-    p->trapframe->a0 = -1;
+
+  if(num <= 0 || num >= NELEM(syscalls)) {
+    printf("%d %s: unknown sys call %d\n", p->pid, p->name, num);
+    goto err_sys;
   }
+
+  if(!(p->mask & (1 << num)))
+    goto exec_sys;
+
+  if(num != SYS_open && num != SYS_exec)
+    goto err_sys; 
+
+  argstr(0, user_path, MAXPATH);
+  if(strncmp(user_path, p->interpose_path, MAXPATH) != 0)
+    goto err_sys;
+  
+exec_sys:
+  p->trapframe->a0 = syscalls[num]();
+  return;
+
+err_sys:
+  p->trapframe->a0 = -1;
 }

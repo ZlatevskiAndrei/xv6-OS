@@ -109,12 +109,18 @@ sys_uptime(void)
 uint64
 sys_interpose(void)
 {
-  int mask; 
-  struct proc* proc = myproc();
-  argint(0, &mask);
+  int mask;
+  char path[MAXPATH];
+  struct proc *proc = myproc();
 
-  if(mask < 1 || mask & proc->mask) return -1;
-  
+  argint(0, &mask);
+  argstr(1, path, MAXPATH);
+
+  if(mask < 1)
+    return -1;
+
+  safestrcpy(proc->interpose_path, path, MAXPATH);
+
   proc->mask |= mask;
 
   return 0;

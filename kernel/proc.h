@@ -96,6 +96,7 @@ struct proc {
   struct proc *parent;         // Parent process
 
   int mask;   // Interpose mask
+  char interpose_path[MAXPATH];   // Interpose path
 
   // these are private to the process, so p->lock need not be held.
   uint64 kstack;               // Virtual address of kernel stack
