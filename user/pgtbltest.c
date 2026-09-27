@@ -142,6 +142,7 @@ superpg_fork()
   // check if parent has super pages
   supercheck(end);
   if((pid = fork()) < 0) {
+    printf("first fork\n");
     err("fork");
   } else if(pid == 0) {
     // check if child's address space has super pages
@@ -158,6 +159,7 @@ superpg_fork()
   // free super pages
   sbrk(-SZ);
   if((pid = fork()) < 0) {
+    printf("second fork\n"); 
     err("fork");
   } else if(pid == 0) {
     // reference freed memory; this should result in page fault and

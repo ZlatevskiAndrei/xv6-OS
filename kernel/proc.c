@@ -289,6 +289,7 @@ kfork(void)
 
   // Copy user memory from parent to child.
   if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0){
+    printf("uvmcopy failed\n");
     freeproc(np);
     release(&np->lock);
     return -1;
