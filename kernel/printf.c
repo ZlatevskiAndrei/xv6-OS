@@ -149,3 +149,18 @@ printfinit(void)
 {
   initlock(&pr.lock, "pr");
 }
+
+void backtrace(void) {
+  uint64 curr_fp = r_fp();
+  uint64 end_stack = PGROUNDDOWN(curr_fp);
+  uint64 start_stack = PGROUNDUP(curr_fp);
+  uint64 curr_ra;
+  printf("backtrace\n");
+  while(end_stack <= curr_fp && curr_fp < start_stack) {
+    curr_ra = curr_fp - 8;
+    printf("%lx\n", *(uint64*)curr_ra);
+    curr_fp -= 16;
+    curr_fp = *(uint64*) curr_fp;  
+  }
+  return;
+}
